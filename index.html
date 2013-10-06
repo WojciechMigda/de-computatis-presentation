@@ -37,12 +37,121 @@
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
         <section>
-          <h2>De computatis</h2>
+          <h1>De computatis</h1>
           <h3>on counting information</h3>
           <p>
-            <small>Wojciech Migda</small>
+            <small>Created by Wojciech Migda</small>
             <br>
             <small>Krak&oacute;w, 2013-10-04</small>
+          </p>
+        </section>
+
+        <section>
+          <h2>Problem</h2>
+          <p>
+Imagine that on one sunny day your manager asks you to write a component which will
+be responsible for generating <b>Key Stream Segments</b> (KSS).
+          </p>
+        </section>
+
+        <section>
+          <h2>Problem</h2>
+          <p>
+Among various requirements he came up with are that the component's interface
+shall allow to query for:
+<ul>
+<li class="fragment">number of <b>bits</b> in the generated KSS,</li>
+<li class="fragment">number of <b>bytes</b> required to safely store the generated KSS,</li>
+</ul>
+          </p>
+        </section>
+
+        <section>
+          <h2>First solution</h2>
+          <p>
+Being a smart person you decided to create two methods:
+<pre><code class="c++">/* get number of bits */
+int getSize(void) const;
+
+/* get number of bytes */
+int getLength(void) const;
+</code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>First solution</h2>
+          <p>
+Unfortunately, some time later the other co-worker who had to use your interface in one place
+made a mistake using <code>getLength</code> instead of <code>getSize</code>.
+</p><p>
+The error was not caught during the code review because the names of the methods were
+not distinctive enough to avoid ambiguity.
+          </p>
+        </section>
+
+        <section>
+          <h2>Second solution</h2>
+          <p>
+Learning from your mistakes you modified the interface renaming the two methods:
+<pre><code class="c++">/* get number of bits */
+int getSizeInBits(void) const;
+
+/* get number of bytes */
+int getSizeInBytes(void) const;
+</code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Second solution</h2>
+          <p>
+And everyone was happy...
+          </p>
+        </section>
+
+        <section>
+          <h2>Second solution</h2>
+          <p>
+...until the weekend came and you, being a considerate employee, began to
+scratch your head and wonder if this is really the best solution out there.
+          </p>
+        </section>
+
+        <section>
+          <h2>Moments of doubt</h2>
+          <p>
+<ul>
+<li class="fragment">what if someone requests another method to return amount of space occupied by the KSS in 16- or 32-bit words?  Would you just keep churning out new methods?</li>
+<li class="fragment">even if everyone is happy with such API, can you do something to protect the return values obtained from the API (counting bits, bytes, words...) from being mixed up later on?</li>
+</ul>
+          </p>
+        </section>
+
+        <section>
+          <h2>Help is on the way</h2>
+          <p>
+Fortunately, over the weekend you met your friend from years back who works at the company where they use
+the latest gcc compilers and C++11 is in daily use.
+          </p>
+          <p>
+Over the glass of beer you told him your story and he responded with a rant on custom measurement units,
+user-defined literals,
+<code class="c++">constexpr</code>, and <code class="c++">operator""()</code>
+          </p>
+        </section>
+
+        <section>
+          <h2>Striving for perfection</h2>
+          <p>
+When you woke up the next day and all traces of intoxicating beverages disappeared from your
+blood system you sat down and still remembering your friends advice sketched the third solution.
+        </section>
+
+        <section>
+          <h2>Striving for perfection</h2>
+This solution boils down to having just one method, which will return a result being of a new
+custom type representing measure of information.
           </p>
         </section>
 
@@ -55,6 +164,7 @@
 public:
 typedef std::size_t value_t;
 constexpr Information() : m_amount(0){}
+;
 </code></pre>
           </p>
     <aside class="notes">
