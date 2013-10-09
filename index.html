@@ -36,64 +36,105 @@
 
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
-        <section>
-          <h1>De computatis</h1>
+        <section data-background="#0a3c59">
+        <img style="border:0px;float:left;margin-right:20px;max-width:35%" src="img/numbots1.png" alt="numbot"/>
+        <div style="text-align:left;margin-top:20px">
+          <h1>De<br/>computatis</h1>
           <h3>on counting information</h3>
           <p>
             <small>Created by Wojciech Migda</small>
             <br>
             <small>Krak&oacute;w, 2013-10-04</small>
           </p>
+        </div>
         </section>
 
-        <section>
-          <h2>Problem</h2>
+        <section data-background="#4d7e65" >
+          <h2>In a galaxy far far away...</h2>
           <p>
-Imagine that on one sunny day your manager asks you to write a component which will
-be responsible for generating <b>Key Stream Segments</b> (KSS).
+the great constructor and designer Trurl was resting in his home when a sudden, loud knock on his door broke his peace. Grunting and cursing with every step he approached the door. When he opened it in front of him stood a messenger:
+          </p>
+          <blockquote>
+          &dash; Sir Trurl, my King has an order for you...
+          </blockquote>
+          Trurl smiled.
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>The Problem</h2>
+          <p>
+The messenger introduced the problem to be solved: there are two distant alied kingdoms which have devised
+a communication using exchange of comets consisting of bits of information. They already know how to build them and send them into space, but so far they have failed when it actually came to extracting the information from bodies of the comets in a fast and reliable manner.
+          </p>
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>The Problem</h2>
+          <p>
+<blockquote>
+&dash; Your task, Sir, will be to build two robots which will intercept every incoming comet and extract the bits of data carried inside, which then will be translated into a message.
+</blockquote>
+          </p>
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>The Problem</h2>
+          <p>
+<blockquote>
+&dash; The robots must have means of controlling them programmaticaly in C++. Specificaly,
+it must be possible to query how many bits of data were extracted from the comet and how much space (in bytes)
+is needed to store the received message.
+</blockquote>
+          </p>
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>The Problem</h2>
+          <p>
+<blockquote>
+&dash; It is a deal, my friend. Tell your King that the robots will be ready in a week.
+</blockquote>
+answered Trurl. The messenger bowed, hopped on his vehicle and swooshed away.
           </p>
         </section>
 
         <section>
-          <h2>Problem</h2>
+          <h2>Solution #1</h2>
           <p>
-Among various requirements he came up with are that the component's interface
-shall allow to query for:
-<ul>
-<li class="fragment">number of <b>bits</b> in the generated KSS,</li>
-<li class="fragment">number of <b>bytes</b> required to safely store the generated KSS,</li>
-</ul>
-          </p>
-        </section>
-
-        <section>
-          <h2>First solution</h2>
-          <p>
-Being a smart person you decided to create two methods:
-<pre><code class="c++">/* get number of bits */
+The robots were quite simple to build, and their infterface included these two methods:
+<pre><code class="c++">/* get number of bits in the message */
 int getSize(void) const;
 
-/* get number of bytes */
+/* get number of bytes of space to hold the message */
 int getLength(void) const;
 </code></pre>
           </p>
         </section>
 
-        <section>
-          <h2>First solution</h2>
+        <section data-background="#4d7e65">
+          <h2>Solution #1</h2>
           <p>
-Unfortunately, some time later the other co-worker who had to use your interface in one place
-made a mistake using <code>getLength</code> instead of <code>getSize</code>.
+The messenger returned on a set date a week later. He brought the payment and left with the robots along with a nicely printed manual on how to use them.
+          </p>
+        </section>
+
+        <section data-background="#8c4738">
+          <h2>Solution #1</h2>
+          <p>
+Unfortunately, the very next day the messenger returned with a complaint.<br/>
+King's son, who was writing scripts to control the robots, despite having the manual, at one point made a mistake
+using <code>getLength</code> instead of <code>getSize</code>.
 </p><p>
-The error was not caught during the code review because the names of the methods were
+He was in a hurry and the error was not caught during the code review because the names of the methods were
 not distinctive enough to avoid ambiguity.
           </p>
         </section>
 
         <section>
-          <h2>Second solution</h2>
+          <h2>Solution #2</h2>
           <p>
-Learning from your mistakes you modified the interface renaming the two methods:
+Trurl agreed to rework the interface and promised that the costs will be covered by the warranty.<br/>
+Learning from his mistakes he modified the interface renaming the two methods:
 <pre><code class="c++">/* get number of bits */
 int getSizeInBits(void) const;
 
@@ -103,74 +144,211 @@ int getSizeInBytes(void) const;
           </p>
         </section>
 
-        <section>
-          <h2>Second solution</h2>
+        <section data-background="#007777">
+          <h2>Response</h2>
           <p>
-And everyone was happy...
+A month later the Messenger arrived again.<br/>
+This time he brought a letter from the King with words of gratitude for the built robots.<br/>
+The letter also mentioned that the newly established communication
+between kingdoms has brought wealth and prosperity.
+          </p>
+        </section>
+
+        <section data-background="#007777">
+          <h2>Another problem</h2>
+          <p>
+Lastly, the King would like to upgrade the data storage
+system to use words instead of bytes, and that will necesitate modification of the interface. However, the other kingdom
+does not plan such storage upgrade so the solution must be backward compatible.
           </p>
         </section>
 
         <section>
-          <h2>Second solution</h2>
+          <h2>Solution #3</h2>
           <p>
-...until the weekend came and you, being a considerate employee, began to
-scratch your head and wonder if this is really the best solution out there.
+Trurl agreed to provide the extension. He added another method:
+<pre><code class="c++">/* get number of bits */
+int getSizeInBits(void) const;
+
+/* get number of bytes */
+int getSizeInBytes(void) const;
+
+/* get number of words */
+int getSizeInWords(void) const;
+</code></pre>
+When he handed over the upgrade package to the Messenger he included a hefty bill, as this time the extra work was not
+covered by the warranty.
           </p>
         </section>
 
-        <section>
-          <h2>Moments of doubt</h2>
+        <section data-background="#0a3c59">
+          <h2>The story continues</h2>
+          <p>
+After another two weeks the messenger arrived again. This time he had two new requests.
+          </p>
+        </section>
+
+        <section data-background="#0a3c59">
+          <h2>The story continues</h2>
           <p>
 <ul>
-<li class="fragment">what if someone requests another method to return amount of space occupied by the KSS in 16- or 32-bit words?  Would you just keep churning out new methods?</li>
-<li class="fragment">even if everyone is happy with such API, can you do something to protect the return values obtained from the API (counting bits, bytes, words...) from being mixed up later on?</li>
+<li>there will be another storage upgrade. But to cut down on costs the King demands a solution which
+will work will any data granularity employed, be that bits, nibbles, bytes, words, double words, and so on.</li>
 </ul>
           </p>
         </section>
 
-        <section>
+        <section data-background="#a3354c">
+          <h2>The story continues</h2>
+          <p>
+<ul>
+<li>there was another issue found regarding the interface. Apparently, at one point, even though the API was
+used correctly, the King's son has used an integer variable which held number of bits to iterate over an array of bytes...
+<br/>Fortunately, this time code inspection was successful, but the King demands such an interface, which will
+effectively prohibit making such mistakes.</li>
+</ul>
+          </p>
+        </section>
+
+        <section data-background="#a3354c">
+          <h2>Trurl's misery</h2>
+          <p>
+As the messenger left Trurl began to ponder. Despite his efforts he could not come up with a solution which would satisfy the King's request.<br/>Finally, he broke in tears and lamented loudly.
+          </p>
+        </section>
+
+        <section data-background="#4d7e65">
           <h2>Help is on the way</h2>
           <p>
-Fortunately, over the weekend you met your friend from years back who works at the company where they use
-the latest gcc compilers and C++11 is in daily use.
+Trurl's cries were heard by his long time friend Klapaucius, who has just returned from the intergalactic C++11 congress and was passing by Trurl's house.
           </p>
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>Help is on the way</h2>
           <p>
-Over the glass of beer you told him your story and he responded with a rant on custom measurement units,
+Trurl presented his story to Klapaucius, who in turn responded with a rant on custom measurement units,
 user-defined literals,
-<code class="c++">constexpr</code>, and <code class="c++">operator""()</code>
+<code class="c++">constexpr</code> keyword, and <code class="c++">operator""()</code>. 
+          </p>
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>Striving for perfection</h2>
+          <p>
+When Trurl woke up the next day he sat down and while still remembering his friend's advice he sketched the ultimate solution.
           </p>
         </section>
 
         <section>
           <h2>Striving for perfection</h2>
           <p>
-When you woke up the next day and all traces of intoxicating beverages disappeared from your
-blood system you sat down and still remembering your friends advice sketched the third solution.
-        </section>
-
-        <section>
-          <h2>Striving for perfection</h2>
 This solution boils down to having just one method, which will return a result being of a new
-custom type representing measure of information.
+custom type representing general measure of information.
           </p>
+<pre><code class="c++">/* get amount of information */
+Information getSize(void) const;
+</code></pre>
         </section>
 
         <section>
-          <h2>Disclaimer</h2>
-          <p>
-            <small>foo</small>
-<pre><code class="c++">class Information
-{
-public:
-typedef std::size_t value_t;
-constexpr Information() : m_amount(0){}
-;
+          <h2>Construction</h2>
+<p>It will be possible to construct Information:</p>
+<p style="text-align:left;">empty:</p>
+<pre><code class="c++">Information info; // zero information</code></pre><br/>
+<p style="text-align:left;">copy constructed from other instance:</p>
+<pre><code class="c++">Information old; // source
+Information current(old);
 </code></pre>
-          </p>
-    <aside class="notes">
-        Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-    </aside>
         </section>
+
+        <section>
+          <h2>Assignment</h2>
+<p>It will be only possible to assign Information with other instance:</p>
+<pre><code class="c++">Information rhs; // source
+Information lhs; // destination
+
+lhs = rhs;
+</code></pre>
+        </section>
+
+
+        <section>
+          <h2>Comparisons</h2>
+<p>It will be possible to compare Information:</p>
+<pre><code class="python">Information lhs, rhs;
+
+lhs == rhs;
+lhs != rhs;
+lhs < rhs;
+lhs <= rhs;
+lhs > rhs;
+lhs >= rhs;
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Arithmetics</h2>
+<p>It will be possible to perform some calculations on Information.</p>
+<pre><code class="c++">Information lhs, rhs;
+
+lhs++;
+++lhs;
+lhs--;
+--lhs;
+lhs += rhs;
+lhs -= rhs;
+lhs + rhs;
+lhs - rhs;
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Arithmetics</h2>
+<pre><code class="c++">Information             lhs, rhs;
+Information::value_t    scalar;
+
+lhs * scalar;
+scalar * rhs;
+
+lhs / scalar; /* result is of type Information */
+lhs / rhs; /* result is a scalar of type Information::value_t */
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Literals</h2>
+<p>Information will be specified in units. Units will be explicitly stated
+when value of Information is declared.</p>
+<pre><code class="c++">Information info;
+
+info = 27_bits;
+info = 14_nibbles;
+info = 47_bytes;
+info = 3_octets;
+info = 9_words;
+info = 0_dwords;
+info = 24_qwords;
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Units</h2>
+<p>There will be predefined constant values of units of measurements.</p>
+<pre><code class="c++">Information bit; /* 1 bit*/
+Information nibble; /* 1 nibble */
+Information byte; /* 1 byte */
+Information octet; /* 1 octet */
+Information word; /* 1 word */
+Information dword; /* 1 dword */
+Information qword; /* 1 qword */
+
+qword == 2 * dword == 4 * word == 8 * octet;
+byte == CHAR_BIT * bit;
+octet == 2 * nibble == 8 * bit;
+</code></pre>
+        </section>
+
       </div>
     </div>
 
