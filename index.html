@@ -52,7 +52,7 @@
         <section data-background="#4d7e65" >
           <h2>In a galaxy far far away...</h2>
           <p>
-the great constructor and designer Trurl was resting in his home when a sudden, loud knock on his door broke his peace. Grunting and cursing with every step he approached the door. When he opened it in front of him stood a messenger:
+the great constructor and designer Trurl was resting in his home when a sudden, loud knock on his door destroyed his peace. With grunts and curses muffled with each step, he approached the door. When he opened it in front of him stood a messenger:
           </p>
           <blockquote>
           &dash; Sir Trurl, my King has an order for you...
@@ -70,9 +70,10 @@ a communication using exchange of comets consisting of bits of information. They
 
         <section data-background="#4d7e65">
           <h2>The Problem</h2>
+<img src="img/cannon-baby-flying-up-full.png" style="border:0px;margin:20px;" alt="Messenger"/>
           <p>
 <blockquote>
-&dash; Your task, Sir, will be to build two robots which will intercept every incoming comet and extract the bits of data carried inside, which then will be translated into a message.
+&dash; Your task, Sir, will be to build two robots which will intercept each incoming comet and extract the bits of data carried inside, which then will be translated into a message.
 </blockquote>
           </p>
         </section>
@@ -80,6 +81,7 @@ a communication using exchange of comets consisting of bits of information. They
         <section data-background="#4d7e65">
           <h2>The Problem</h2>
           <p>
+<img src="img/satellite.png" style="border:0px;float:right;margin:20px;" alt="Robot"/>
 <blockquote>
 &dash; The robots must have means of controlling them programmaticaly in C++. Specificaly,
 it must be possible to query how many bits of data were extracted from the comet and how much space (in bytes)
@@ -90,6 +92,7 @@ is needed to store the received message.
 
         <section data-background="#4d7e65">
           <h2>The Problem</h2>
+<img src="img/looking-right.png" style="border:0px;float:left;margin-right;20px;" alt="Trurl"/>
           <p>
 <blockquote>
 &dash; It is a deal, my friend. Tell your King that the robots will be ready in a week.
@@ -114,16 +117,16 @@ int getLength(void) const;
         <section data-background="#4d7e65">
           <h2>Solution #1</h2>
           <p>
-The messenger returned on a set date a week later. He brought the payment and left with the robots along with a nicely printed manual on how to use them.
+The messenger returned on a set date a week later. He brought the payment and left with the robots along with a nicely printed manual on how to program them.
           </p>
+<img src="img/items-control-room.png" style="border:0px;margin:20px;" alt="Controller"/>
         </section>
 
         <section data-background="#8c4738">
           <h2>Solution #1</h2>
           <p>
 Unfortunately, the very next day the messenger returned with a complaint.<br/>
-King's son, who was writing scripts to control the robots, despite having the manual, at one point made a mistake
-using <code>getLength</code> instead of <code>getSize</code>.
+The contractor hired by the King and appointed to write scripts to control the robots, despite having the manual, at one point made a mistake and used <code>getLength</code> instead of <code>getSize</code>.
 </p><p>
 He was in a hurry and the error was not caught during the code review because the names of the methods were
 not distinctive enough to avoid ambiguity.
@@ -148,7 +151,7 @@ int getSizeInBytes(void) const;
           <h2>Response</h2>
           <p>
 A month later the Messenger arrived again.<br/>
-This time he brought a letter from the King with words of gratitude for the built robots.<br/>
+This time he brought a letter from the King with words of gratitude for the delivered robots.<br/>
 The letter also mentioned that the newly established communication
 between kingdoms has brought wealth and prosperity.
           </p>
@@ -193,7 +196,7 @@ After another two weeks the messenger arrived again. This time he had two new re
           <p>
 <ul>
 <li>there will be another storage upgrade. But to cut down on costs the King demands a solution which
-will work will any data granularity employed, be that bits, nibbles, bytes, words, double words, and so on.</li>
+will work with any data granularity employed, be that bits, nibbles, bytes, words, double words, and so on.</li>
 </ul>
           </p>
         </section>
@@ -202,8 +205,8 @@ will work will any data granularity employed, be that bits, nibbles, bytes, word
           <h2>The story continues</h2>
           <p>
 <ul>
-<li>there was another issue found regarding the interface. Apparently, at one point, even though the API was
-used correctly, the King's son has used an integer variable which held number of bits to iterate over an array of bytes...
+<li>there was another issue with the interface found few days ago. Apparently, even though the API was
+used correctly, the contractor has used an integer variable which held number of bits to iterate over an array of bytes...
 <br/>Fortunately, this time code inspection was successful, but the King demands such an interface, which will
 effectively prohibit making such mistakes.</li>
 </ul>
@@ -213,14 +216,16 @@ effectively prohibit making such mistakes.</li>
         <section data-background="#a3354c">
           <h2>Trurl's misery</h2>
           <p>
-As the messenger left Trurl began to ponder. Despite his efforts he could not come up with a solution which would satisfy the King's request.<br/>Finally, he broke in tears and lamented loudly.
+As the messenger left Trurl began to ponder. Despite his intense efforts he could not come up with a solution which would satisfy the King's request.<br/>Finally, he broke in tears and lamented loudly.
           </p>
+<img src="img/sitting.png" style="border:0px;margin:20px;" alt="Trurl"/>
         </section>
 
         <section data-background="#4d7e65">
           <h2>Help is on the way</h2>
+<img src="img/hi-3.png" style="border:0px;margin:20px;" alt="Klapaucjusz"/>
           <p>
-Trurl's cries were heard by his long time friend Klapaucius, who has just returned from the intergalactic C++11 congress and was passing by Trurl's house.
+Trurl's cries were heard by his long time friend Klapaucius, who has just returned from the intergalactic C++11 congress and was passing by a Trurl's house.
           </p>
         </section>
 
@@ -253,7 +258,7 @@ Information getSize(void) const;
 
         <section>
           <h2>Construction</h2>
-<p>It will be possible to construct Information:</p>
+<p>It will be possible to construct <code>Information</code>:</p>
 <p style="text-align:left;">empty:</p>
 <pre><code class="c++">Information info; // zero information</code></pre><br/>
 <p style="text-align:left;">copy constructed from other instance:</p>
@@ -264,7 +269,7 @@ Information current(old);
 
         <section>
           <h2>Assignment</h2>
-<p>It will be only possible to assign Information with other instance:</p>
+<p>It will only be possible to assign <code>Information</code> with other instance:</p>
 <pre><code class="c++">Information rhs; // source
 Information lhs; // destination
 
@@ -275,7 +280,7 @@ lhs = rhs;
 
         <section>
           <h2>Comparisons</h2>
-<p>It will be possible to compare Information:</p>
+<p>It will be possible to compare <code>Information</code>:</p>
 <pre><code class="python">Information lhs, rhs;
 
 lhs == rhs;
@@ -289,7 +294,7 @@ lhs >= rhs;
 
         <section>
           <h2>Arithmetics</h2>
-<p>It will be possible to perform some calculations on Information.</p>
+<p>It will be possible to perform some calculations on <code>Information</code>.</p>
 <pre><code class="c++">Information lhs, rhs;
 
 lhs++;
@@ -313,13 +318,16 @@ scalar * rhs;
 
 lhs / scalar; /* result is of type Information */
 lhs / rhs; /* result is a scalar of type Information::value_t */
+
+lhs.div(rhs); /* result is a quotient|remainder pair
+               * represented by Information::pair_t */
 </code></pre>
         </section>
 
         <section>
           <h2>Literals</h2>
-<p>Information will be specified in units. Units will be explicitly stated
-when value of Information is declared.</p>
+<p><code>Information</code> will be specified in units. Units will be explicitly stated
+when a value of <code>Information</code> is declared.</p>
 <pre><code class="c++">Information info;
 
 info = 27_bits;
@@ -348,6 +356,18 @@ byte == CHAR_BIT * bit;
 octet == 2 * nibble == 8 * bit;
 </code></pre>
         </section>
+
+        <section data-background="#4d7e65">
+          <h2>Happy end</h2>
+          <p>
+No details of Trurl's implementation have spilled to the public, but
+the popular story is that the King was truely delighted with the final
+solution and rewarded the constructor accordingly.</p>
+<p>
+We can follow Trurl's steps and with a bit of an effort recreate his work.
+          </p>
+        </section>
+
 
       </div>
     </div>
