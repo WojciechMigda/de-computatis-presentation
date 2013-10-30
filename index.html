@@ -297,14 +297,17 @@ lhs >= rhs;
 <p>It will be possible to perform some calculations on <code>Information</code>.</p>
 <pre><code class="c++">Information lhs, rhs;
 
-lhs++;
-++lhs;
-lhs--;
---lhs;
 lhs += rhs;
 lhs -= rhs;
 lhs + rhs;
 lhs - rhs;
+
+/* these don't make sense */
+lhs++;
+++lhs;
+lhs--;
+--lhs;
+
 </code></pre>
         </section>
 
@@ -364,8 +367,317 @@ No details of Trurl's implementation have spilled to the public, but
 the popular story is that the King was truely delighted with the final
 solution and rewarded the constructor accordingly.</p>
 <p>
-We can follow Trurl's steps and with a bit of an effort recreate his work.
+But the story doesn't end here.
+With a bit of an effort we can follow Trurl's steps and recreate his work.
           </p>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>First, let's define some types:</p>
+<pre><code class="c++">class Information
+{
+public:
+/* core storage type */
+typedef std::size_t value_t;
+
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>First, let's define some types:</p>
+<pre><code class="c++">class Information
+{
+public:
+typedef std::size_t value_t;
+
+/* pair_t represents result of div  */
+typedef struct pair
+{
+    value_t     q; // quotient
+    value_t     r; // remainder
+    constexpr pair(const value_t q, const value_t r) : q(q), r(r) {}
+} pair_t;
+
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>Now we can declare member data:</p>
+<pre><code class="c++">class Information
+{
+private:
+/* amount of information, can use arbitrary units */
+value_t     m_amount;
+
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>We will follow with construction:</p>
+<pre><code class="c++">class Information
+{
+public:
+constexpr Information() : m_amount(0){}
+constexpr Information(const Information & rhs) : m_amount(rhs.m_amount) {}
+
+private:
+constexpr Information(const value_t amount) : m_amount(amount) {}
+};
+</code></pre>
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>constexpr</h2>
+<p>So what does this <code>constexpr</code> mean?</p>
+        </section>
+
+        <section data-background="#4d7e65">
+          <h2>constexpr</h2>
+<p>In short:<br/>if arguments to the expression declared as <code>constexpr</code> are constants or other
+<code>constexpr</code> expressions, then the value of such expression will be evaluated during
+compile time.</p><br/>
+<p>Note: body of a <code>constexpr</code> function must comprise of a single statement.</p>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>then operators:</p>
+<pre><code class="c++">class Information
+{
+public:
+Information & operator+=(const Information &rhs)
+{
+    m_amount += rhs.m_amount;
+    return *this;
+}
+Information & operator-=(const Information &rhs)
+{
+    m_amount -= rhs.m_amount;
+    return *this;
+}
+
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>and more operators:</p>
+<pre><code class="c++">class Information
+{
+public:
+constexpr Information operator+(const Information & rhs) const
+    {return Information(m_amount + rhs.m_amount);}
+constexpr Information operator-(const Information & rhs) const
+    {return Information(m_amount - rhs.m_amount);}
+constexpr Information operator*(const value_t rhs) const
+    {return Information(m_amount * rhs);}
+constexpr Information operator/(const value_t rhs) const
+    {return Information(m_amount / rhs);}
+
+constexpr value_t operator/(const Information & rhs) const
+    {return m_amount / rhs.m_amount;}
+constexpr value_t operator%(const Information & rhs) const
+    {return m_amount % rhs.m_amount;}
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>and even more operators:</p>
+<pre><code class="c++">class Information
+{
+public:
+constexpr bool operator==(const Information & rhs) const
+    {return m_amount == rhs.m_amount;}
+constexpr bool operator!=(const Information & rhs) const
+    {return m_amount != rhs.m_amount;}
+constexpr bool operator<=(const Information & rhs) const
+    {return m_amount <= rhs.m_amount;}
+constexpr bool operator>=(const Information & rhs) const
+    {return m_amount >= rhs.m_amount;}
+constexpr bool operator<(const Information & rhs) const
+    {return m_amount < rhs.m_amount;}
+constexpr bool operator>(const Information & rhs) const
+    {return m_amount > rhs.m_amount;}
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Information class</h2>
+<p>basic conversions:</p>
+<pre><code class="c++">class Information
+{
+public:
+constexpr value_t to(const Information & rhs) const
+    {return *this / rhs;}
+
+constexpr pair_t div(const Information & rhs) const
+    {return pair(*this / rhs, *this % rhs);}
+
+constexpr pair_t convert(const Information & rhs) const
+    {return this->div(rhs);}
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>User-defined literals</h2>
+<p>C++11 introduced UDL syntax [over.literal]:</p>
+<br/>
+<p><code>operator ""</code> <i>identifier</i>(<i>parameter-declaration-clause
+</i>)</p>
+<br/>
+<p>then we can write:</p>
+<pre><code class="c++">long operator "" _MHz(long double);
+
+long frequency = 390.3_MHz;
+</code></pre>
+        </section>
+
+        <section>
+          <h2>User-defined literals</h2>
+<p>We will use UDLs to define these suffixes:</p>
+<pre><code class="c++">constexpr Information operator"" _bit(unsigned long long x)
+    {return Information(x);}
+
+constexpr Information operator"" _nibble(unsigned long long x)
+    {return Information(x * 4u);}
+constexpr Information operator"" _byte(unsigned long long x)
+    {return Information(x * CHAR_BIT);}
+constexpr Information operator"" _octet(unsigned long long x)
+    {return Information(x * 8u);}
+constexpr Information operator"" _word(unsigned long long x)
+    {return Information(x * 16u);}
+constexpr Information operator"" _dword(unsigned long long x)
+    {return Information(x * 32u);}
+constexpr Information operator"" _qword(unsigned long long x)
+    {return Information(x * 64u);}
+</code></pre>
+        </section>
+
+        <section>
+          <h2>User-defined literals</h2>
+<p>but since <code>Information(const value_t amount)</code> is private we
+need to <code>friend</code> those operators:</p>
+<pre><code class="c++">class Information
+{
+friend constexpr Information operator"" _bit(unsigned long long x);
+friend constexpr Information operator"" _nibble(unsigned long long x);
+friend constexpr Information operator"" _byte(unsigned long long x);
+friend constexpr Information operator"" _octet(unsigned long long x);
+friend constexpr Information operator"" _word(unsigned long long x);
+friend constexpr Information operator"" _dword(unsigned long long x);
+friend constexpr Information operator"" _qword(unsigned long long x);
+};
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Convenience units</h2>
+<p>to finish, for convenience we will define information units:</p>
+<pre><code class="c++">/* in global scope */
+constexpr Information bit(1_bit);
+constexpr Information nibble(1_nibble);
+constexpr Information byte(1_byte);
+constexpr Information octet(1_octet);
+constexpr Information word(1_word);
+constexpr Information dword(1_dword);
+constexpr Information qword(1_qword);
+</code></pre>
+        </section>
+
+        <section>
+          <h2>constexpr</h2>
+<p>What difference does it make?</p>
+        </section>
+
+        <section>
+          <h2>constexpr</h2>
+<p>As an example let's take this definition:</p>
+<pre><code class="c++">// file main.cpp
+
+Information  foo = 147_bit;
+</code></pre>
+and look at the generated assembly x86 code...
+        </section>
+
+        <section>
+          <h2>constexpr</h2>
+<p>without <code>constexpr</code> we will get (default optimization):</p>
+<pre><code>foo:
+	.zero	4  ;;; declaration in memory
+...
+	movl	$foo, %eax  ;;; at program start
+	movl	$147, 4(%esp)
+	movl	$0, 8(%esp)
+	movl	%eax, (%esp)
+	call	_Zli4_bity  ;;; ctor called
+</code></pre>
+whereas having <code>constexpr</code> gives:
+<pre><code>foo:
+	.long	147  ;;; declaration in memory
+</code></pre>
+        </section>
+
+        <section>
+          <h2>constexpr</h2>
+<p>and with an <code>-O3</code> optimization:</p>
+<pre><code>foo:
+	.zero	4
+...
+	movl	$147, foo  ;;; runtime initialization
+</code></pre>
+<code>constexpr</code> version:
+<pre><code>foo:
+	.long	147
+</code></pre>
+        </section>
+
+        <section>
+          <h2>constexpr</h2>
+<p>What about <code>const</code> definition?</p>
+<pre><code class="c++">// file main.cpp
+
+Information  foo = 147_bit;
+const Information  goo = 279_bit;
+...
+return foo + goo;
+</code></pre>
+        </section>
+
+        <section>
+          <h2>constexpr</h2>
+<p>regular code with <code>-O3</code> optimization:</p>
+<pre><code>	.local	_ZL3goo  ;;; again, declaration in memory
+	.comm	_ZL3goo,4,4
+...
+	movl	$279, _ZL3goo  ;;; and runtime initialization
+...
+	movl	_ZL3goo, %edx  ;;; foo + goo
+	addl	foo, %edx      ;;; referencing memory location
+</code></pre>
+<code>constexpr</code> version:
+<pre><code>	movl	foo, %edx   ;;; foo + goo
+	addl	$279, %edx  ;;; goo is just a numeric literal
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Thank you</h2>
+<h1>Q&A</h1>
+<a href="https://github.com/WojciechMigda/information">https://github.com/WojciechMigda/information</a>
+<br/>
+<a href="http://wojciechmigda.github.io/de-computatis-presentation/#/">http://wojciechmigda.github.io/de-computatis-presentation/#/</a>
         </section>
 
 
